@@ -1,0 +1,19 @@
+{
+    "name": "cswiley/html-toolbox",
+    "description": "Basic HTML toolbox for lightweight website development",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "cameron wiley",
+            "email": "cswiley1@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cswiley\\HtmlToolbox\\": "src/"
+        }
+    }
+}
