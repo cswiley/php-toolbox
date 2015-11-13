@@ -12,25 +12,9 @@ function o($output)
     echo htmlentities($output);
 }
 
-/**
- * Dumps a variable for inspection in a console
- *
- * @param $item
- *
- * @return void
- */
-function cdbg($item)
+function e($output)
 {
-
-    if (is_array($item) || is_object($item)) {
-        print_r($item);
-
-        return;
-    }
-
-    echo $item . "\n";
-
-    return;
+    o($output);
 }
 
 /**
@@ -51,44 +35,97 @@ function dd($item)
     die();
 }
 
-/**
- * Includes a view. Data passes via the $data parameter is extracted into local variables
- *
- * @param       $file
- * @param array $data
- */
-function view($file, $data = array())
+function maybeValue(&$value, $fallback = null)
 {
-    extract($data);
-    require(DOC_ROOT . '/views/' . $file . '.php');
+    return (isset($value)) ? $value : $fallback;
+}
+
+function pathJoin()
+{
+    $args = func_get_args();
+
+    return join('/', array_filter($args));
+}
+
+function arrayFlatten($array)
+{
+    $flatten = array();
+    foreach ($array as $obj) {
+        if (!is_array($obj)) {
+            $flatten[] = $obj;
+            continue;
+        }
+        foreach ($obj as $key => $val) {
+            $flatten[$key] = $val;
+        }
+    }
+
+    return $flatten;
+}
+
+function hashFill($keys, $value = 1)
+{
+    $res = [];
+    foreach ($keys as $key) {
+        $res[$key] = $value;
+    }
+
+    return $res;
+}
+
+function isJsonError($response)
+{
+    return isset($response['ok']) && $response['ok'] === false && isset($response['error']);
+}
+
+function jsonError($message)
+{
+    return ['ok' => false, 'error' => $message];
+}
+
+function jsonSuccess(Array $message)
+{
+    $message['ok'] = true;
+
+    return $message;
+}
+
+function arrayIndexBy($array, $key, $group = true)
+{
+    $results = [];
+    foreach ($array as $item) {
+        $value = is_object($item) ? $item->$key : $item[$key];
+        if ($group) {
+
+            if (!isset($results[$value])) {
+                $results[$value] = [];
+            }
+
+            $results[$value][] = $item;
+        } else {
+            $results[$value] = $item;
+        }
+    }
+
+    return $results;
 }
 
 /**
- * Formats a date into a MySQL compatible string
+ * Convert php time phase to a standard SQL format
  *
- * @param string $date
- *
+ * @param string $timePhrase
+ * @param string $format
  * @return bool|string
  */
-function sqlDate($date = 'now')
+function sqlDate($timePhrase = '', $format = 'Y-m-d H:i:s')
 {
-    $time = strtotime($date);
-
-    return date('Y-m-d H:i:s', $time);
+    return (!!$timePhrase) ? date($format, strtotime($timePhrase)) : date($format);
 }
 
 function show404()
 {
     header("HTTP/1.1 404 Not Found");
     view("errors/404");
-}
-
-function showError($error = false)
-{
-    if (ob_get_level() > 0) {
-        ob_end_clean();
-    }
-    view("errors/default", array("error" => $error));
 }
 
 function template($id)
