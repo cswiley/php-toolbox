@@ -17,7 +17,7 @@ class Html
 
     static function e($output)
     {
-        o($output);
+        static::o($output);
     }
 
     /**
@@ -34,7 +34,7 @@ class Html
 
     static function dd($item)
     {
-        dbg($item);
+        static::dbg($item);
         die();
     }
 
@@ -137,19 +137,6 @@ class Html
     static function sqlDate($timePhrase = '', $format = 'Y-m-d H:i:s')
     {
         return (!!$timePhrase) ? date($format, strtotime($timePhrase)) : date($format);
-    }
-
-    static function show404()
-    {
-        header("HTTP/1.1 404 Not Found");
-        view("errors/404");
-    }
-
-    static function template($id)
-    {
-        echo '<script type="text/html" id="' . $id . '">';
-        view("templates/" . $id);
-        echo '</script>';
     }
 
     static function get($key)
