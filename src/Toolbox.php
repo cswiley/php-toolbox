@@ -1,63 +1,30 @@
 <?php
 
-namespace Cswiley\HtmlToolbox;
-
-class Html
-{
+use Illuminate\Support\Debug\Dumper;
 
     /**
      * Escapes html then prints $output
      *
      * @param $output
      */
-    static function o($output)
+    function o($output)
     {
-        echo htmlentities($output);
+        e($output);
     }
 
-    static function e($output)
+    function dbg()
     {
-        static::o($output);
+        array_map(function ($x) {
+            (new Dumper)->dump($x);
+        }, func_get_args());
     }
 
-    /**
-     * Dumps a variable for inspection in a browser
-     *
-     * @param $item
-     */
-    static function dbg($item)
-    {
-        echo "<pre>";
-        var_dump($item);
-        echo "</pre>";
-    }
-
-    static function dd($item)
-    {
-        static::dbg($item);
-        die();
-    }
-
-    /**
-     * Partial function application
-     * @return \Closure
-     */
-    static function partial(/* $func, $args... */)
-    {
-        $args = func_get_args();
-        $func = array_shift($args);
-
-        return function () use ($func, $args) {
-            return call_user_func_array($func, array_merge($args, func_get_args()));
-        };
-    }
-
-    static function maybeValue(&$value, $fallback = null)
+    function maybe(&$value, $fallback = null)
     {
         return (isset($value)) ? $value : $fallback;
     }
 
-    static function pathJoin()
+    function pathJoin()
     {
         $args = func_get_args();
 
@@ -156,4 +123,3 @@ class Html
 
         return $_POST[$key];
     }
-}
