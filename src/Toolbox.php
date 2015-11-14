@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Debug\Dumper;
 
+if (!function_exists('o')) {
+
     /**
-     * Escapes html then prints $output
+     * Escape HTML entities in a string.
      *
      * @param $output
      */
@@ -11,27 +13,50 @@ use Illuminate\Support\Debug\Dumper;
     {
         e($output);
     }
+}
 
+if (!function_exists('dbg')) {
+
+    /**
+     * Dump the passed variables and continue the script.
+     *
+     * @param  mixed
+     * @return void
+     */
     function dbg()
     {
         array_map(function ($x) {
             (new Dumper)->dump($x);
         }, func_get_args());
     }
+}
 
+if (!function_exists('maybe')) {
+
+    /**
+     * Return value reference when it is not null, otherwise return a fallback
+     * @param      $value
+     * @param null $fallback
+     * @return null
+     */
     function maybe(&$value, $fallback = null)
     {
         return (isset($value)) ? $value : $fallback;
     }
+}
+
+if (!function_exists('pathJoin')) {
 
     function pathJoin()
     {
-        $args = func_get_args();
-
-        return join('/', array_filter($args));
+        return join('/', array_filter(func_get_args()));
     }
+}
 
-    static function arrayFlatten($array)
+
+if (!function_exists('array_aflatten')) {
+
+    function array_aflatten($array)
     {
         $flatten = array();
         foreach ($array as $obj) {
@@ -46,35 +71,11 @@ use Illuminate\Support\Debug\Dumper;
 
         return $flatten;
     }
+}
 
-    static function hashFill($keys, $value = 1)
-    {
-        $res = [];
-        foreach ($keys as $key) {
-            $res[$key] = $value;
-        }
+if (!function_exists('array_index_by')) {
 
-        return $res;
-    }
-
-    static function isJsonError($response)
-    {
-        return isset($response['ok']) && $response['ok'] === false && isset($response['error']);
-    }
-
-    static function jsonError($message)
-    {
-        return ['ok' => false, 'error' => $message];
-    }
-
-    static function jsonSuccess(Array $message)
-    {
-        $message['ok'] = true;
-
-        return $message;
-    }
-
-    static function arrayIndexBy($array, $key, $group = true)
+    function array_index_by($array, $key, $group = true)
     {
         $results = [];
         foreach ($array as $item) {
@@ -93,6 +94,50 @@ use Illuminate\Support\Debug\Dumper;
 
         return $results;
     }
+}
+
+
+if (!function_exists('hash_fill')) {
+
+    function hash_fill($keys, $value = 1)
+    {
+        $res = [];
+        foreach ($keys as $key) {
+            $res[$key] = $value;
+        }
+
+        return $res;
+    }
+}
+
+if (!function_exists('is_json_error')) {
+
+    function is_json_error($response)
+    {
+        return isset($response['ok']) && $response['ok'] === false && isset($response['error']);
+    }
+
+}
+
+if (!function_exists('json_error')) {
+
+    function json_error($message)
+    {
+        return ['ok' => false, 'error' => $message];
+    }
+}
+
+if (!function_exists('json_success')) {
+
+    function json_success(Array $message)
+    {
+        $message['ok'] = true;
+
+        return $message;
+    }
+}
+
+if (!function_exists('sql_date')) {
 
     /**
      * Convert php time phase to a standard SQL format
@@ -101,12 +146,15 @@ use Illuminate\Support\Debug\Dumper;
      * @param string $format
      * @return bool|string
      */
-    static function sqlDate($timePhrase = '', $format = 'Y-m-d H:i:s')
+    function sql_date($timePhrase = '', $format = 'Y-m-d H:i:s')
     {
         return (!!$timePhrase) ? date($format, strtotime($timePhrase)) : date($format);
     }
+}
 
-    static function get($key)
+if (!function_exists('get')) {
+
+    function get($key)
     {
         if (!isset($_GET[$key])) {
             return false;
@@ -114,8 +162,11 @@ use Illuminate\Support\Debug\Dumper;
 
         return $_GET[$key];
     }
+}
 
-    static function post($key)
+if (!function_exists('post')) {
+
+    function post($key)
     {
         if (!isset($_POST[$key])) {
             return false;
@@ -123,3 +174,4 @@ use Illuminate\Support\Debug\Dumper;
 
         return $_POST[$key];
     }
+}

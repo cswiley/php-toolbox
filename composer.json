@@ -1,6 +1,6 @@
 {
-    "name": "cswiley/html-toolbox",
-    "description": "Basic HTML toolbox for lightweight website development",
+    "name": "cswiley/php-toolbox",
+    "description": "Basic PHP toolbox consisting of global functions for lightweight website development",
     "license": "MIT",
     "authors": [
         {
@@ -13,8 +13,8 @@
         "illuminate/support": "5.1.*"
     },
     "autoload": {
-        "psr-4": {
-            "Cswiley\\HtmlToolbox\\": "src/"
-        }
+        "files": [
+            "src/Toolbox.php"
+        ]
     }
 }
