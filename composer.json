@@ -13,8 +13,11 @@
         "illuminate/support": "5.1.*"
     },
     "autoload": {
+        "psr-4": {
+            "Cswiley\\PhpToolbox\\": "src/"
+        },
         "files": [
-            "src/Toolbox.php"
+            "src/globals.php"
         ]
     }
 }
